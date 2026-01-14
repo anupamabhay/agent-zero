@@ -1,0 +1,11 @@
+services:
+  agent:
+    build: .
+    env_file:
+      - .env
+    volumes:
+      # Mount workspace data so results persist outside the container
+      - ./workspace_data:/app/workspace_data
+    environment:
+      - WORKSPACE_ROOT=/app/workspace_data
+    restart: unless-stopped
