@@ -1,16 +1,11 @@
-"""
-Configuration management using Pydantic Settings.
-Handles environment variables and defaults.
-"""
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic import SecretStr
 
 class Settings(BaseSettings):
-    """Application Settings."""
-    google_api_key: str
-    gemini_model: str = "gemini-2.5-pro"
-    workspace_root: str = "./workspace_data"
+    google_api_key: SecretStr
+    gemini_model: str = "gemini-3-flash"
+    workspace_root: str = "./workspace"
     
-    class Config:
-        env_file = ".env"
+    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
 
 settings = Settings()
