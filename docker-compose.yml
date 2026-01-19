@@ -1,0 +1,9 @@
+services:
+  agent-zero:
+    build: .
+    volumes:
+      - ./workspace_data:/app/workspace
+    environment:
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+    stdin_open: true
+    tty: true

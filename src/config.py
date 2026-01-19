@@ -5,7 +5,12 @@ class Settings(BaseSettings):
     google_api_key: SecretStr
     gemini_model: str = "gemini-3-flash"
     workspace_root: str = "./workspace"
+    log_level:  str = "INFO"
     
-    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
+    model_config = SettingsConfigDict(
+        env_file=".env", 
+        env_file_encoding="utf-8",
+        extra="ignore"    
+    )
 
 settings = Settings()
