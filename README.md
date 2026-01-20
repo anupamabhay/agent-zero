@@ -7,7 +7,7 @@
 * Can Write, Read, and List files with path traversal security checks.
 * Built on Pydantic for data validation and structured output.
 
-## 🛠️ Architecture
+## Architecture
 
 Follows a cyclic graph architecture:
 1.  **Reason:** LLM analyzes the state and plans the next move.
@@ -17,7 +17,7 @@ Follows a cyclic graph architecture:
 
 ---
 
-## ⚡ Getting Started
+## Getting Started
 
 ### Prerequisites
 *   Docker Desktop installed and running.
@@ -54,7 +54,7 @@ To exit, type `quit`.
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 ```text
 agent-zero/
