@@ -1,23 +1,16 @@
-# Agent Zero
+## About
 
-**Agent Zero** is a production-grade **Autonomous AI Agent**. Unlike standard chatbots that just generate text, Agent Zero generates **actions**. It perceives a goal, breaks it down into plans, executes tools (file manipulation, coding), observes the results, and iterates until the job is done.
-
-Built with **LangGraph** (State Machine), **Google Gemini 3**, and **Docker** (Sandboxing).
-
----
-
-## 🚀 Key Features
-
-*   **🧠 Cyclic Reasoning Engine:** Uses a "Think → Act → Observe" loop (ReAct pattern) powered by LangGraph, allowing for error recovery and complex planning.
-*   **🛡️ Secure Sandbox:** All execution happens inside an isolated Docker container. The agent can only modify files in the mounted `workspace_data/` directory, protecting your host OS.
-*   **⚡ Gemini 3 Powered:** optimized for the latest Gemini 3 Flash/Pro models with massive context windows (1M+ tokens).
-*   **📁 File System Tools:** Native capabilities to Write, Read, and List files with path traversal security checks.
-*   **🔍 Type Safety:** Built on Pydantic for rigorous data validation and structured output.
+* Built with **LangGraph** (State), **Gemini** (Reason), and **Docker** (Sandbox).
+* Uses a "Think → Act → Observe" loop (ReAct pattern) powered by LangGraph.
+* All execution happens inside an isolated Docker container. The agent can only modify files in the mounted `workspace_data/` directory, protecting the host OS.
+* Optimized for the latest Gemini 3 Flash/Pro models with massive context windows (1M+ tokens).
+* Can Write, Read, and List files with path traversal security checks.
+* Built on Pydantic for data validation and structured output.
 
 ## 🛠️ Architecture
 
-Agent Zero follows a cyclic graph architecture:
-1.  **Reason:** The LLM analyzes the state and plans the next move.
+Follows a cyclic graph architecture:
+1.  **Reason:** LLM analyzes the state and plans the next move.
 2.  **Router:** Decides whether to act (call a tool) or finish (respond to user).
 3.  **Execute:** Runs the tool in the Docker sandbox.
 4.  **Observe:** Captures the tool output and feeds it back into the "Reason" node.
@@ -66,8 +59,8 @@ To exit, type `quit`.
 ```text
 agent-zero/
 ├── src/
-│   ├── agent/         # LangGraph logic (The Brain)
-│   ├── core/          # State definitions and LLM factory
+│   ├── agent/         # LangGraph logic (Brain)
+│   ├── core/          # State definitions and LLM 
 │   ├── tools/         # Tool definitions (Filesystem, etc.)
 │   ├── config.py      # Configuration management
 │   └── main.py        # Entry point
