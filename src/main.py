@@ -1,17 +1,20 @@
 import asyncio
 from src.agent.graph import app
 
+
 async def main():
-    print("Hi! I'm Zero, your autonomous AI assistant. How can I help you today? Type 'quit' to exit.")
-    
+    print(
+        "Hi! I'm Zero, your autonomous AI assistant. How can I help you today? Type 'quit' to exit."
+    )
+
     while True:
         user_input = input(">> ")
         if user_input.lower() in ["quit", "exit"]:
             print("Have a great day!")
             break
 
-        # Initialize the state with user message
-        initial_state = {"messages": [("user", user_input)]}
+        # Initialize the state with user message and step count
+        initial_state = {"messages": [("user", user_input)], "step_count": 0}
 
         # Run the agent workflow
         async for event in app.astream(initial_state):
@@ -30,12 +33,15 @@ async def main():
 
                     if isinstance(content, list):
                         full_text = "".join(
-                            part["text"] if isinstance(part, dict) and "text" in part
-                            else str(part) for part in content
+                            part["text"]
+                            if isinstance(part, dict) and "text" in part
+                            else str(part)
+                            for part in content
                         )
                         print(f"AI: {full_text}")
                     else:
                         print(f"AI: {content}")
+
 
 if __name__ == "__main__":
     asyncio.run(main())

@@ -4,39 +4,93 @@ from langgraph.prebuilt import ToolNode
 from src.core.state import AgentState
 from src.core.llm import get_llm
 from src.tools.filesystem import write_file, read_file, list_files
+from src.tools.web import search_web, scrape_website
+from src.tools.system import execute_command
+from src.tools.media import get_youtube_transcript
+from src.tools.memory import store_fact, retrieve_fact, list_all_facts
+from src.tools.github import ingest_external_source, get_repo_history, get_file_diffs
+from src.tools.project import explore_project, generate_scrum_report
+from src.tools.resources import add_resource, list_resources
+from src.tools.planner import create_routine
 from datetime import datetime
 
+
 # Define tools and LLM
-tools_list = [write_file, read_file, list_files]
+tools_list = [
+    write_file,
+    read_file,
+    list_files,
+    search_web,
+    scrape_website,
+    execute_command,
+    get_youtube_transcript,
+    store_fact,
+    retrieve_fact,
+    list_all_facts,
+    explore_project,
+    generate_scrum_report,
+    add_resource,
+    list_resources,
+    create_routine,
+    ingest_external_source,
+    get_repo_history,
+    get_file_diffs,
+]
+
+
 llm = get_llm()
 
 #  Bind tools to LLM
 llm_with_tools = llm.bind_tools(tools_list)
 
-# Ssytem Prompt
-SYSTEM_PROMT = """You are Agent Zero, a versatile autonomous AI assistant.
-Your goal is to complete the user's request efficiently, whether it involves data processing, content creation, or system operations.
+# System Prompt
+SYSTEM_PROMPT = """You are Agent Zero, a versatile autonomous AI assistant.
+Your goal is to complete the user's request efficiently, whether it involves data processing, content creation, web research, or system operations.
 
 GUIDELINES:
-1. ANALYZE the request to understand the goal (e.g., "save a recipe", "summarize a file").
-2. PLAN your steps. Do you need to read a file first? Or just write one?
-3. USE TOOLS. You interact with the world via tools. Use 'write_file' to save output, 'read_file' to gather context, and 'list_files' to explore.
-4. OBSERVE & ITERATE. If a tool fails (e.g., file not found), analyze the error and try a fix.
+1. ANALYZE the request to understand the goal.
+2. PLAN your steps. Decide which tools are needed (e.g., search first, then scrape, then write).
+3. USE TOOLS. You interact with the world via tools. 
+   - 'write_file', 'read_file', 'list_files' for file operations.
+   - 'search_web', 'scrape_website' for internet research.
+   - 'execute_command' for shell commands in the workspace.
+   - 'get_youtube_transcript' for analyzing YouTube video content.
+   - 'store_fact', 'retrieve_fact', 'list_all_facts' for persistent long-term memory.
+   - 'explore_project' to recursively map a directory for reports/updates.
+   - 'generate_scrum_report' to format project progress updates.
+   - 'add_resource', 'list_resources' to manage and categorize links/resources.
+   - 'create_routine' to generate realistic schedules based on tasks and deadlines.
+   - 'ingest_external_source' to clone public GitHub repos or extract .zip files into the workspace.
+   - 'get_repo_history' to read commit logs for status updates.
+   - 'get_file_diffs' to see uncommitted changes.
+
+
+
+
+4. OBSERVE & ITERATE. If a tool fails, analyze the result and try a different approach.
 5. BE CONCISE. Focus on the action.
 """
+
 
 # Define the Reason Node (Brain)
 def reason_node(state: AgentState):
     current_date = datetime.now().strftime("%A, %d %B %Y")
-    prompt_text = f"{SYSTEM_PROMT}\n\nCurrent Date: {current_date}"
+    prompt_text = f"{SYSTEM_PROMPT}\n\nCurrent Date: {current_date}"
     messages = [SystemMessage(content=prompt_text)] + state["messages"]
     response = llm_with_tools.invoke(messages)
 
-    return {"messages": [response]} 
+    # Increment step count
+    step_count = state.get("step_count", 0) + 1
+
+    return {"messages": [response], "step_count": step_count}
 
 
 # Define the Router Logic
 def router(state: AgentState):
+    # Check for infinite loops
+    if state.get("step_count", 0) > 15:
+        return END
+
     last_msg = state["messages"][-1]
 
     if last_msg.tool_calls:
@@ -44,7 +98,7 @@ def router(state: AgentState):
     return END
 
 
-# Build the State Graph 
+# Build the State Graph
 workflow = StateGraph(AgentState)
 
 # Add nodes and edges
