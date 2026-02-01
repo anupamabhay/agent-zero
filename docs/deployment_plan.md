@@ -32,5 +32,21 @@ Build a VS Code extension that allows calling Agent Zero directly from within th
 - **Pros:** Best for developer workflow, direct access to project files.
 - **Cons:** Tied to a specific IDE.
 
+## Phase 2: API-First Evolution (The Core for any Interface)
+
+To support any of the above interfaces (Web, GUI, or VS Code), we must transition from a CLI-bound script to an **API-First Architecture**.
+
+### 1. Backend Server (FastAPI)
+Create a `src/api/` layer using **FastAPI**.
+- **Endpoint `POST /chat`**: Receives user input, runs the LangGraph, and returns the response.
+- **WebSocket `ws://...`**: Allows real-time streaming of node events (Brain thinking, Tool calling) to the UI.
+- **Persistence**: Store conversation history in a database (PostgreSQL/Redis) so the user can resume sessions from any device.
+
+### 2. Unified State Management
+The `AgentState` will be updated to include a `session_id` and `user_id`. This ensures that even if the app scales, the agent knows which user it's talking to and what was discussed previously.
+
+### 3. File Management Service
+Instead of direct file I/O in the workspace, the API will serve as a gateway to download/upload files from the `workspace_data` folder, making it accessible through a web browser or GUI.
+
 ---
 **Next Step:** We will discuss which of these fits your vision best.

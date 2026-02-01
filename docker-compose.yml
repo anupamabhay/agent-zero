@@ -5,5 +5,7 @@ services:
       - ./workspace_data:/app/workspace
     environment:
       - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - WORKSPACE_ROOT=./workspace
+
     stdin_open: true
     tty: true
