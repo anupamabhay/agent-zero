@@ -21,6 +21,9 @@ async def main():
         )
     )
 
+    # Initialize session state
+    state = {"messages": [], "step_count": 0}
+
     while True:
         try:
             user_input = console.input("[bold green]>> [/bold green]")
@@ -31,12 +34,17 @@ async def main():
             if not user_input.strip():
                 continue
 
-            initial_state = {"messages": [("user", user_input)], "step_count": 0}
+            # Update state for new turn
+            state["messages"].append(("user", user_input))
+            state["step_count"] = 0
 
             console.print(f"\n[dim]Starting workflow for: {user_input}[/dim]")
 
-            async for event in app.astream(initial_state):
+            async for event in app.astream(state):
                 for key, value in event.items():
+                    # Update local state with the results from the graph
+                    state.update(value)
+
                     # Format node header
                     if key == "reason":
                         icon = "🧠"

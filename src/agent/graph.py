@@ -9,11 +9,8 @@ from src.tools.system import execute_command
 from src.tools.media import get_youtube_transcript
 from src.tools.memory import store_fact, retrieve_fact, list_all_facts
 from src.tools.github import ingest_external_source, get_repo_history, get_file_diffs
-from src.tools.project import explore_project, generate_scrum_report
-from src.tools.resources import add_resource, list_resources
-from src.tools.planner import create_routine
+from src.tools.host import open_in_app
 from datetime import datetime
-
 
 # Define tools and LLM
 tools_list = [
@@ -35,6 +32,7 @@ tools_list = [
     ingest_external_source,
     get_repo_history,
     get_file_diffs,
+    open_in_app,
 ]
 
 
@@ -68,8 +66,11 @@ OPERATIONAL GUIDELINES:
    - 'ingest_external_source' to clone public GitHub repos or extract .zip files into the workspace.
    - 'get_repo_history' to read commit logs for status updates.
    - 'get_file_diffs' to see uncommitted changes.
+   - 'open_in_app' to open a workspace file in a host application (Notepad, Obsidian, etc.).
 
 4. OBSERVE & ITERATE. If a tool fails, analyze the result and try a different approach.
+5. CONTEXTUAL MEMORY: You have a persistent memory of this session's messages. Do not "guess" or "re-read" files to find what was JUST discussed. Use the message history.
+6. FILE CONTENT PURITY: Files you create (e.g., Markdown reports, routines) must contain ONLY the raw data/requested content. NEVER include meta-comments like "(updated by agent)", "(modified)", or conversational filler inside the file itself.
 """
 
 
