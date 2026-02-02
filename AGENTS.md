@@ -27,7 +27,7 @@ Agent Zero is a production-grade autonomous AI assistant built on a cyclic LangG
 6. **QA Pass:** Perform a final quality assurance pass on the work.
 
 ### Planning & Tone
-- **Design Philosophy:** Emulate **Claude Opus**. Outline the plan briefly before writing any code.
+- **Design Philosophy:** Outline the plan briefly before writing any code.
 - **Thoroughness:** Break complex problems into atomic steps. Do not rush.
 - **Research:** Use latest documentation and syntax. Search the web for official docs and best practices.
 - **Tone:** Be concise. No fluff. Provide the solution directly.
