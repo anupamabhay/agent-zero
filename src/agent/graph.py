@@ -9,7 +9,11 @@ from src.tools.system import execute_command
 from src.tools.media import get_youtube_transcript
 from src.tools.memory import store_fact, retrieve_fact, list_all_facts
 from src.tools.github import ingest_external_source, get_repo_history, get_file_diffs
+from src.tools.project import explore_project, generate_scrum_report
+from src.tools.resources import add_resource, list_resources
+from src.tools.planner import create_routine
 from src.tools.host import open_in_app
+
 from datetime import datetime
 
 # Define tools and LLM
