@@ -57,10 +57,11 @@
 ## 📝 Change Log & Session Progress
 
 ### Session: 2026-02-02 (Current)
-- **Action**: Documentation Reorganization.
+- **Action**: Documentation Reorganization & Agent Rules.
 - **Result**:
     - Created `docs/MASTER_PLAN.md` (Merging roadmap and backlog).
     - Created `docs/TECHNICAL_SPECIFICATION.md` (User manual and tool guide).
+    - Created `AGENTS.md` (Standard OpenCode project rules and Pantheon delegation instructions).
     - Renamed and updated `docs/PROOF_OF_COMPLETION.md`.
     - Pushed branches `dev` and `feat/project-docs` to remote.
 
